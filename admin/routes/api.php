@@ -1,0 +1,11 @@
+<?php
+
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
+
+// Product Routes
+Route::apiResource('products', ProductController::class);
+
+Route::get('user', [UserController::class, 'random']);

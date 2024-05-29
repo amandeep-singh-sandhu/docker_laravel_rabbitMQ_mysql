@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: 'admin'  
+    command: 'php artisan serve --host=0.0.0.0'
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - admin_db
+  
+  admin_queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: admin_queue
+    command: 'php artisan queue:work'
+    depends_on:
+      - admin_db
+
+  admin_db:
+    image: mysql:8.4
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'user'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'password'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      # <Port exposed> : <MySQL Port running inside container>
+      - '33063:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '33063'
+      # Where our data will be persisted
+    volumes:
+      - ./storage/dbdata:/var/lib/mysql
+
+networks:
+  laravel:
+    driver: bridge
