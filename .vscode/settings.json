@@ -14,5 +14,10 @@
             "username": "user",
             "password": "password"
         }
+    ],
+    "cSpell.words": [
+        "laravel",
+        "Laravel",
+        "Laravel's"
     ]
 }
